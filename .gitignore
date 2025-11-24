@@ -1,2 +1,3 @@
 *.csv
 mlflow_experiments/mlruns/
+exported_model/model
