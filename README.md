@@ -79,7 +79,7 @@ Predict future sales for a retail or e-commerce business using historical sales 
 
 ---
 ## 📂 Project Structure
-
+```
 Sales_Forecasting_and_Optimization_GP/
 │
 ├── 📊 Data Exploration
