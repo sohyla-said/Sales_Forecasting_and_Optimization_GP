@@ -80,11 +80,42 @@ Predict future sales for a retail or e-commerce business using historical sales 
 ---
 ## 📂 Project Structure
 
-- `train_sample.csv` – Raw sales data.
-- `processed_data.csv` – Preprocessed dataset ready for modeling.
-- `EDA.ipynb` – Exploratory Data Analysis.
-- `preprocessing.ipynb` – Data cleaning & feature engineering.
-- `model.ipynb` – Model training, evaluation, and comparison.
+Sales_Forecasting_and_Optimization_GP/
+│
+├── 📊 Data Exploration
+│   ├── EDA.ipynb                    # Exploratory Data Analysis
+│   ├── visualization.ipynb          # EDA visualizations
+│   ├── dashboard.py                 # Interactive EDA dashboard
+│
+├── ⚙️ Preprocessing
+│    ├── preprocessing.ipynb         # Data cleaning & feature engineering
+│
+├── 🧠 ML model
+│    ├── model.ipynb                # Model training, evaluation anf comparison
+│
+├── 🔧 Server/
+│      ├──  main_api.py             # FastAPI backend with built-in monitoring
+│      ├──  inference.py            # Python script to test request to the api endpoint
+│
+│── 🖥️ UI/
+│      ├──  ui.py                    # Streamlit web interface
+│
+├── 🔍 Model_Monitoring
+│      ├── monitor.py               # Core monitoring script with health checks
+│
+│── 🔍 Logs/                        # Generated monitoring logs
+│       ├── latency_logs.csv        # API latency measurements
+│       ├── error_logs.csv          # Error logs 
+│       └── drift_logs.csv          # Data drift detection alerts
+│
+│
+├── 📋README.md                    # Project documentation
+│
+├── train_sample.csv             # Raw sales data
+├── processed_data.csv           # Preprocessed dataset
+├── label_encodings.csv          # Category encoding mappings
+└── ⚙️ requirements.txt             # Python dependencies
+```
 
 ---
 
@@ -188,7 +219,7 @@ streamlit run ".\Data Exploration\dashboard.py"
 cd Server
 
 # Start the API server
-uvicorn main_api:app --reload --port 8000
+uvicorn Server.main_api:app --reload --port 8000
 
 # Expected output:
 # ✅ Model loaded successfully!
@@ -211,3 +242,115 @@ streamlit run ui.py
 # - Real-time API communication
 # Access at: http://localhost:8501
 ```
+---
+
+## 🔍 Model Monitoring
+
+### Built-in API Monitoring
+The FastAPI server (`main_api.py`) includes built-in monitoring features:
+- **Automatic latency tracking** for all `/predict` requests
+- **Data drift detection**
+- **CSV logging** to `Logs/` directory
+
+### External Monitoring System
+
+#### Core Monitoring Script
+```bash
+# Run basic health and drift monitoring
+cd Model_Monitoring
+python monitor.py
+
+# Features:
+# - API health checks
+# - Latency monitoring with thresholds
+# - Data drift detection using statistical tests
+# - Error rate monitoring when actuals are available
+# - Alert system for performance degradation
+```
+
+---
+
+## 🔧 API Endpoint
+
+### POST `/predict`
+**Purpose**: Generate sales predictions with built-in monitoring
+
+**Request Body Example:**
+```json
+{
+  "store_nbr": 1.0,
+  "item_nbr": 96995.0,
+  "unit_sales": 7.0,
+  "onpromotion": 0.0,
+  "day": 1,
+  "month": 1,
+  "dayofweek": 0,
+  "week": 1,
+  "family_encoded": 0,
+  "city_encoded": 0,
+  "state_encoded": 0,
+  "type_encoded": 0,
+  "is_outlier": 0,
+  "is_return": 0,
+  "holiday": 0,
+  "year": 2017,
+  "is_weekend": 0
+}
+```
+
+**Response:**
+```json
+{
+  "status": "success",
+  "predicted_sales": 15.42,
+  "drift_score": 0.85
+}
+```
+
+---
+
+## 🛠️ Workflow Summary
+
+## Development Phase
+1. **Data Exploration** → Run `EDA.ipynb`
+2. **Data Preprocessing** → Run `preprocessing.ipynb`
+3. **Model Training** → Run `model.ipynb`
+4. **Model Export** → Save best model with MLflow
+
+### Deployment Phase
+1. **Start API Server** → `uvicorn main_api:app --reload`
+2. **Launch Web Interface** → `streamlit run ui.py`
+3. **Run Dashboard** → `streamlit run dashboard.py`
+
+---
+
+## 🚀 Quick Start
+```bash
+# 1. Clone and setup
+git clone <https://github.com/sohyla-said/Sales_Forecasting_and_Optimization_GP.git>
+cd Sales_Forecasting_and_Optimization_GP
+pip install -r requirements.txt
+
+# 2. Run data analysis (optional)
+jupyter notebook EDA.ipynb
+
+# 3. Preprocess data
+Run `preprocessing.ipynb`
+
+# 4. Train Model
+Run `model.ipynb`
+# 5. Start prediction API
+cd Server
+uvicorn main_api:app --reload &
+
+# 6. Start web interface
+cd ../UI
+streamlit run ui.py &
+
+# 6. Start monitoring (production)
+python ../Model_Monitoring/monitor.py
+```
+**Access Points:**
+- **Prediction Interface**: http://localhost:8501
+- **API Documentation**: http://localhost:8000/docs
+- **EDA Dashboard**: `streamlit run dashboard.py`

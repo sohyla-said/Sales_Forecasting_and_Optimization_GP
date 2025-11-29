@@ -52,8 +52,8 @@ with st.form("prediction_form"):
     
     with col1:
         st.subheader("Store & Item Information")
-        store_nbr = st.number_input("Store Number", min_value=0.0, value=1.0, step=1.0)
-        item_nbr = st.number_input("Item Number", min_value=0.0, value=1.0, step=1.0)
+        store_nbr = st.number_input("Store Number", min_value=0.0, value=1.0)
+        item_nbr = st.number_input("Item Number", min_value=0.0, value=1.0)
         unit_sales = st.number_input("Unit Sales", min_value=0.0, value=1.0, step=0.1)
         onpromotion = st.selectbox("On Promotion", [0.0, 1.0], format_func=lambda x: "Yes" if x == 1.0 else "No")
         
