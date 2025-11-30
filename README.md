@@ -111,10 +111,11 @@ Sales_Forecasting_and_Optimization_GP/
 │
 ├── 📋README.md                    # Project documentation
 │
+├── Dockerfile                    # series of instructions used to build a Docker image
 ├── train_sample.csv             # Raw sales data
 ├── processed_data.csv           # Preprocessed dataset
 ├── label_encodings.csv          # Category encoding mappings
-└── ⚙️ requirements.txt             # Python dependencies
+└── ⚙️ requirements.txt         # Python dependencies
 ```
 
 ---
@@ -213,13 +214,15 @@ streamlit run ".\Data Exploration\dashboard.py"
 
 ### 3. 🚀 Model Deployment & API
 
+#### Option A: Local Development (Traditional)
+
 #### Step 1: Start FastAPI Server
 ```bash
 # Navigate to Server directory
 cd Server
 
 # Start the API server
-uvicorn Server.main_api:app --reload --port 8000
+uvicorn main_api:app --reload --port 8000
 
 # Expected output:
 # ✅ Model loaded successfully!
@@ -241,6 +244,20 @@ streamlit run ui.py
 # - Dropdown menus with readable labels
 # - Real-time API communication
 # Access at: http://localhost:8501
+```
+
+#### Option B: Docker Deployment (Production-Ready)
+
+##### Prerequisites
+- Docker installed on your system
+
+##### Step 1: Build Docker Image
+```bash
+# Navigate to project root directory
+cd Sales_Forecasting_and_Optimization_GP
+
+# Build the Docker image
+docker build -t sales-forecast-api:latest .
 ```
 ---
 
@@ -318,9 +335,9 @@ python monitor.py
 4. **Model Export** → Save best model with MLflow
 
 ### Deployment Phase
-1. **Start API Server** → `uvicorn main_api:app --reload`
-2. **Launch Web Interface** → `streamlit run ui.py`
-3. **Run Dashboard** → `streamlit run dashboard.py`
+1. **Start API Server** → `uvicorn Server.main_api:app --reload`
+2. **Launch Web Interface** → `streamlit run UI.ui.py`
+3. **Run Dashboard** → `streamlit run ".\Data Exploration\dashboard.py"`
 
 ---
 
@@ -353,4 +370,4 @@ python ../Model_Monitoring/monitor.py
 **Access Points:**
 - **Prediction Interface**: http://localhost:8501
 - **API Documentation**: http://localhost:8000/docs
-- **EDA Dashboard**: `streamlit run dashboard.py`
+- **EDA Dashboard**: `streamlit run ".\Data Exploration\dashboard.py`
